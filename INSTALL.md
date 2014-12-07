@@ -33,7 +33,7 @@ and [non standard home directories](https://github.com/wkhtmltopdf/wkhtmltopdf/i
 (i.e. not located in `/home`) are not supported -- you are advised to
 use a VM instead to build wkhtmltopdf.
 
-Building is supported only on 64-bit Debian Jessie (i.e. testing release), and
+Building is supported only on 64-bit Debian Jessie (i.e. stable release), and
 the binaries are produced in a self-contained chroot environment for the
 target distribution -- you will need to first setup the build environment
 and then only you can perform the build for a 32-bit or 64-bit binary.
@@ -84,6 +84,8 @@ Windows
 * Do "Windows Update" to ensure that VC/SDK security patches are up-to-date
 * Install the latest [ActivePerl](http://www.activestate.com/activeperl/downloads) release
 * Install the latest [Python 2.7](http://www.python.org/downloads/windows/) release
+* Install the latest [Ruby](http://rubyinstaller.org/downloads/) release
+* Install [Cygwin](https://cygwin.com/install.html) (ensure that you install the `make` package).
 * Install [NSIS 2.46](http://nsis.sourceforge.net/Download)
 * Make sure that you can run "git". If not, add it to the PATH or reinstall
   with option "Run Git from the Windows Command Prompt".
