@@ -189,7 +189,7 @@ PdfCommandLineParser::PdfCommandLineParser(PdfGlobal & s, QList<PdfObject> & ps)
 
 	addarg("lowquality",'l',"Generates lower quality pdf/ps. Useful to shrink the result document space", new ConstSetter<QPrinter::PrinterMode>(s.resolution,QPrinter::ScreenResolution));
  	addarg("title", 0, "The title of the generated pdf file (The title of the first document is used if not specified)", new QStrSetter(s.documentTitle,"text"));
-
+	addarg("custom-orientations", NULL, "", new QStrSetter(s.pageSpecificOrientations, NULL,false));
 	addarg("read-args-from-stdin", 0, "Read command line arguments from stdin", new ConstSetter<bool>(readArgsFromStdin, true) );
 
 	extended(true);

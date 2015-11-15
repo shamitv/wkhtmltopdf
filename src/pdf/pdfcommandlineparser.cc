@@ -143,6 +143,8 @@ void PdfCommandLineParser::readme(FILE * fd, bool html) const {
 void PdfCommandLineParser::parseArguments(int argc, const char ** argv, bool fromStdin) {
 	bool defaultMode = false;
 	int arg=1;
+	QList <QPrinter::Orientation> pageOrientations;
+	
 
 	PdfObject def;
 
@@ -154,6 +156,39 @@ void PdfCommandLineParser::parseArguments(int argc, const char ** argv, bool fro
 
 	if (readArgsFromStdin && !fromStdin) return;
 
+	//Parse page-specific print orientation 
+	def.orientation = this->globalSettings.orientation;
+	if (this->globalSettings.pageSpecificOrientations != NULL){
+		fprintf(stdout, "Custom page orientations specified.\n\n");
+		QPrinter::Orientation orientation;
+		def.override_orientation = true;
+		for (int i = 0; i < this->globalSettings.pageSpecificOrientations.size(); i++){
+			QChar c = globalSettings.pageSpecificOrientations.at(i);
+			char orientParam = c.toUpper().toLatin1();
+			if (orientParam == 'P'){
+				orientation = QPrinter::Portrait;
+			}
+			else{
+				if (orientParam == 'L'){
+					orientation = QPrinter::Landscape;
+				}
+				else{
+					orientation = def.orientation;
+				}
+			}
+			pageOrientations.append(orientation);
+		}
+		if (pageOrientations.size() < pageSettings.size()){
+			fprintf(stderr, "Custom page orientations not specified for all pages.\n\n");
+			EXIT_FAILURE;
+		}
+	}
+	else{
+		def.override_orientation = false;
+	}
+
+	
+	
 	//Parse page options
 	while (arg < argc-1) {
 		pageSettings.push_back(def);
@@ -195,6 +230,12 @@ void PdfCommandLineParser::parseArguments(int argc, const char ** argv, bool fro
 			}
 			QByteArray a(argv[arg]);
 			ps.page = QString::fromLocal8Bit(a);
+			if (!def.override_orientation){
+				ps.orientation = def.orientation;
+			}
+			else{
+				ps.orientation = pageOrientations.takeFirst();
+			}
 			++arg;
 		}
 		for (;arg < argc;++arg) {

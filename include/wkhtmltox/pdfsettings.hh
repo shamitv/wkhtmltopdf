@@ -124,6 +124,10 @@ struct DLL_PUBLIC PdfGlobal {
 	//! The file where in to store the output
 	QString out;
 
+	//! custom page orientations
+	QString pageSpecificOrientations;
+
+
 	QString documentTitle;
 
 	bool useCompression;
@@ -170,6 +174,11 @@ struct DLL_PUBLIC PdfObject {
 
 	QString page;
 
+	//! To override global landscape or portrate orientation 
+	bool override_orientation;
+	QPrinter::Orientation orientation;
+
+
 	//! Header related settings
 	HeaderFooter header;
 
@@ -202,6 +211,7 @@ struct DLL_PUBLIC PdfObject {
 
 	QString get(const char * name);
 	bool set(const char * name, const QString & value);
+
 };
 
 DLL_PUBLIC QPrinter::PageSize strToPageSize(const char * s, bool * ok=0);

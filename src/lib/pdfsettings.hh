@@ -173,6 +173,12 @@ struct DLL_PUBLIC PdfObject {
 
 	QString page;
 
+	
+	//! To override global landscape or portrate orientation 
+	bool override_orientation;
+	QPrinter::Orientation orientation;
+
+
 	//! Header related settings
 	HeaderFooter header;
 

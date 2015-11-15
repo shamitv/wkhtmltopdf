@@ -307,7 +307,10 @@ void PdfConverterPrivate::preprocessPage(PageObject & obj) {
 		obj.page->mainFrame()->setScrollBarPolicy(Qt::Horizontal,Qt::ScrollBarAlwaysOff);
 	}
 
-
+	if (obj.settings.override_orientation){
+		printer->setOrientation(obj.settings.orientation);
+	}
+	
 	QWebPrinter wp(obj.page->mainFrame(), printer, *painter);
 	obj.pageCount = obj.settings.pagesCount? wp.pageCount(): 0;
 	pageCount += obj.pageCount;
@@ -863,6 +866,9 @@ void PdfConverterPrivate::spoolPage(int page) {
 void PdfConverterPrivate::spoolTo(int page) {
 	int pc=settings.collate?1:settings.copies;
 	const settings::PdfObject & ps = objects[currentObject].settings;
+	if (ps.override_orientation){
+		printer->setOrientation(ps.orientation);
+	}
 	while (objectPage < page) {
 		for (int pc_=0; pc_ < pc; ++pc_)
 			spoolPage(objectPage);
